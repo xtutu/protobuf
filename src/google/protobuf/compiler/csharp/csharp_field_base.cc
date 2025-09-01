@@ -6,6 +6,7 @@
 // https://developers.google.com/open-source/licenses/bsd
 
 #include "google/protobuf/compiler/csharp/csharp_field_base.h"
+#include "google/protobuf/compiler/csharp/csharp_options.h"
 
 #include <cmath>
 #include <limits>
@@ -193,11 +194,23 @@ std::string FieldGeneratorBase::oneof_name() {
 }
 
 std::string FieldGeneratorBase::property_name() {
-  return GetPropertyName(descriptor_);
+  if (options()->keep_name) {
+    // Use the standard property name generation as before
+    return GetPropertyName(descriptor_);
+  } else {
+    // Keep original field name from protobuf but convert to PascalCase for property name
+    return UnderscoresToPascalCase(GetFieldName(descriptor_));
+  }
 }
 
 std::string FieldGeneratorBase::name() {
-  return UnderscoresToCamelCase(GetFieldName(descriptor_), false);
+  if (options()->keep_name) {
+    // Keep original field name from protobuf
+    return GetFieldName(descriptor_);
+  } else {
+    // Use camelCase format as before
+    return UnderscoresToCamelCase(GetFieldName(descriptor_), false);
+  }
 }
 
 std::string FieldGeneratorBase::type_name() {

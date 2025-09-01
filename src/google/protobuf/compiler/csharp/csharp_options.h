@@ -23,7 +23,8 @@ struct Options {
         base_namespace_specified(false),
         internal_access(false),
         serializable(false),
-        strip_nonfunctional_codegen(false) {}
+        strip_nonfunctional_codegen(false),
+        keep_name(false) {}
   // Extension of the generated file. Defaults to ".cs"
   std::string file_extension;
   // Base namespace to use to create directory hierarchy. Defaults to "".
@@ -50,6 +51,9 @@ struct Options {
   bool serializable;
   // If true, strip out nonfunctional codegen.
   bool strip_nonfunctional_codegen;
+  
+  // If true, keep the original field names from protobuf files instead of converting to camelCase
+  bool keep_name;
 };
 
 }  // namespace csharp

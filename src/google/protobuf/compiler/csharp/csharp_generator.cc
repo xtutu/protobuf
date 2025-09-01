@@ -59,6 +59,8 @@ bool Generator::Generate(const FileDescriptor* file,
       cli_options.serializable = true;
     } else if (options[i].first == "experimental_strip_nonfunctional_codegen") {
       cli_options.strip_nonfunctional_codegen = true;
+    } else if (options[i].first == "keep_name") {
+      cli_options.keep_name = true;
     } else {
       *error = absl::StrCat("Unknown generator option: ", options[i].first);
       return false;
