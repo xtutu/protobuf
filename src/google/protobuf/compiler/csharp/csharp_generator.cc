@@ -24,6 +24,9 @@ namespace protobuf {
 namespace compiler {
 namespace csharp {
 
+// Initialize global static variable
+bool g_keep_name = false;
+
 Generator::Generator() = default;
 Generator::~Generator() = default;
 
@@ -61,11 +64,15 @@ bool Generator::Generate(const FileDescriptor* file,
       cli_options.strip_nonfunctional_codegen = true;
     } else if (options[i].first == "keep_name") {
       cli_options.keep_name = true;
+      g_keep_name = true;
     } else {
       *error = absl::StrCat("Unknown generator option: ", options[i].first);
       return false;
     }
   }
+  
+  // Always set the global variable to match the current options
+  g_keep_name = cli_options.keep_name;
 
   std::string filename_error = "";
   std::string filename = GetOutputFile(file,

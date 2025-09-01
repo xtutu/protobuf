@@ -226,8 +226,16 @@ std::string GetPropertyName(const FieldDescriptor* descriptor) {
            "WriteTo", "Clone", "CalculateSize", "MergeFrom", "OnConstruction",
            "Parser"});
 
-  // TODO: consider introducing csharp_property_name field option
-  std::string property_name = UnderscoresToPascalCase(GetFieldName(descriptor));
+  // Use the global g_keep_name option to determine whether to keep original field name
+  std::string property_name;
+  if (g_keep_name) {
+    // Keep original field name from protobuf
+    property_name = GetFieldName(descriptor);
+  } else {
+    // Convert to PascalCase for property name
+    property_name = UnderscoresToPascalCase(GetFieldName(descriptor));
+  }
+  
   // Avoid either our own type name or reserved names.
   // There are various ways of ending up with naming collisions, but we try to
   // avoid obvious ones. In particular, we avoid the names of all the members we

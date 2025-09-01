@@ -15,6 +15,9 @@ namespace protobuf {
 namespace compiler {
 namespace csharp {
 
+// Global static variable to store keep_name option
+extern bool g_keep_name;
+
 // Generator options (used by csharp_generator.cc):
 struct Options {
   Options()
